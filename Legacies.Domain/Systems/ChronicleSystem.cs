@@ -1,4 +1,5 @@
-﻿using Legacies.Domain.Enums;
+﻿using Legacies.Domain.Constants;
+using Legacies.Domain.Enums;
 using Legacies.Domain.Interfaces;
 using Legacies.Domain.Models;
 
@@ -82,14 +83,14 @@ namespace Legacies.Domain.Systems
 
         private static ChronicleEvent? CreatePopulationEvent(WorldDate currentDate, PopulationChangeSummary change)
         {
-            if (change.PreviousSize <= 0)
+            if (change.PreviousSize <= ChronicleConstants.MinimumPreviousPopulationSize)
             {
                 return null;
             }
 
             decimal changeRatio = (change.CurrentSize - change.PreviousSize) / (decimal)change.PreviousSize;
 
-            if (change.CurrentSize == 0)
+            if (change.CurrentSize == ChronicleConstants.CollapsedPopulationSize)
             {
                 return new ChronicleEvent(
                     currentDate.Clone(),
@@ -103,7 +104,7 @@ namespace Legacies.Domain.Systems
                 };
             }
 
-            if (change.PreviousSupportPressure < 0.10m && change.CurrentSupportPressure >= 0.10m && changeRatio <= -0.08m)
+            if (change.PreviousSupportPressure < ChronicleConstants.PressureEventThreshold && change.CurrentSupportPressure >= ChronicleConstants.PressureEventThreshold && changeRatio <= ChronicleConstants.DeclineEventChangeRatioThreshold)
             {
                 return new ChronicleEvent(
                     currentDate.Clone(),
@@ -117,7 +118,7 @@ namespace Legacies.Domain.Systems
                 };
             }
 
-            if (change.PreviousSupportPressure >= 0.10m && change.CurrentSupportPressure < 0.05m && changeRatio >= 0.05m)
+            if (change.PreviousSupportPressure >= ChronicleConstants.PressureEventThreshold && change.CurrentSupportPressure < ChronicleConstants.RecoveryPressureThreshold && changeRatio >= ChronicleConstants.GrowthEventChangeRatioThreshold)
             {
                 return new ChronicleEvent(
                     currentDate.Clone(),

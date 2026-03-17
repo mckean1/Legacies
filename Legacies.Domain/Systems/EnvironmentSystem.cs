@@ -1,4 +1,5 @@
-﻿using Legacies.Domain.Enums;
+﻿using Legacies.Domain.Constants;
+using Legacies.Domain.Enums;
 using Legacies.Domain.Interfaces;
 using Legacies.Domain.Models;
 
@@ -15,17 +16,17 @@ namespace Legacies.Domain.Systems
             foreach (Region region in world.Regions.OrderBy(region => region.Id))
             {
                 decimal seasonalOffset = CalculateSeasonalOffset(world.CurrentDate.Month, region.SeasonalPeakMonth, region.SeasonalVolatility);
-                region.CurrentEnvironmentalPressure = Math.Clamp(region.BaseEnvironmentalPressure + seasonalOffset, -0.25m, 0.95m);
+                region.CurrentEnvironmentalPressure = Math.Clamp(region.BaseEnvironmentalPressure + seasonalOffset, EnvironmentConstants.MinimumEnvironmentalPressure, EnvironmentConstants.MaximumEnvironmentalPressure);
             }
         }
 
         private static decimal CalculateSeasonalOffset(int month, int peakMonth, decimal seasonalVolatility)
         {
             int monthDistance = Math.Abs(month - peakMonth);
-            monthDistance = Math.Min(monthDistance, 12 - monthDistance);
+            monthDistance = Math.Min(monthDistance, WorldConstants.MonthsInYear - monthDistance);
 
-            decimal normalizedDistance = monthDistance / 6m;
-            return (normalizedDistance - 0.5m) * seasonalVolatility;
+            decimal normalizedDistance = monthDistance / EnvironmentConstants.HalfYearInMonths;
+            return (normalizedDistance - EnvironmentConstants.SeasonalNeutralDistance) * seasonalVolatility;
         }
     }
 }

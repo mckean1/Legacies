@@ -1,4 +1,5 @@
-﻿using Legacies.Domain.Enums;
+﻿using Legacies.Domain.Constants;
+using Legacies.Domain.Enums;
 
 namespace Legacies.Domain.Models
 {
@@ -14,7 +15,7 @@ namespace Legacies.Domain.Models
 
         public decimal SeasonalVolatility { get; set; }
 
-        public int SeasonalPeakMonth { get; set; } = 1;
+        public int SeasonalPeakMonth { get; set; } = RegionConstants.DefaultSeasonalPeakMonth;
 
         public decimal CurrentEnvironmentalPressure { get; set; }
 

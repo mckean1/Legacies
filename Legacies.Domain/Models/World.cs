@@ -1,4 +1,6 @@
-﻿namespace Legacies.Domain.Models
+﻿using Legacies.Domain.Constants;
+
+namespace Legacies.Domain.Models
 {
     public sealed class World
     {
@@ -18,7 +20,7 @@
 
         public World()
         {
-            CurrentDate = new WorldDate(1, 1);
+            CurrentDate = new WorldDate(WorldConstants.FirstYear, WorldConstants.FirstMonthOfYear);
         }
 
         public void AdvanceTime()

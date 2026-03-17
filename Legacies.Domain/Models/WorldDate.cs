@@ -13,27 +13,27 @@ namespace Legacies.Domain.Models
 
         public Season Season => Month switch
         {
-            >= 1 and <= 3 => Season.Spring,
-            >= 4 and <= 6 => Season.Summer,
-            >= 7 and <= 9 => Season.Autumn,
+            >= WorldConstants.FirstMonthOfYear and < WorldConstants.SummerStartMonth => Season.Spring,
+            >= WorldConstants.SummerStartMonth and < WorldConstants.AutumnStartMonth => Season.Summer,
+            >= WorldConstants.AutumnStartMonth and < WorldConstants.WinterStartMonth => Season.Autumn,
             _ => Season.Winter
         };
 
         public WorldDate(int year, int month)
         {
-            if (year < 1)
+            if (year < WorldConstants.FirstYear)
             {
                 throw new ArgumentOutOfRangeException(nameof(year));
             }
 
-            if (month < 1 || month > WorldConstants.MonthsInYear)
+            if (month < WorldConstants.FirstMonthOfYear || month > WorldConstants.MonthsInYear)
             {
                 throw new ArgumentOutOfRangeException(nameof(month));
             }
 
             Year = year;
             Month = month;
-            AbsoluteMonth = ((year - 1) * WorldConstants.MonthsInYear) + (month - 1);
+            AbsoluteMonth = ((year - WorldConstants.FirstYear) * WorldConstants.MonthsInYear) + (month - WorldConstants.FirstMonthOfYear);
         }
 
         public void AdvanceOneMonth()
@@ -43,7 +43,7 @@ namespace Legacies.Domain.Models
 
             if (Month > WorldConstants.MonthsInYear)
             {
-                Month = 1;
+                Month = WorldConstants.FirstMonthOfYear;
                 Year++;
             }
         }

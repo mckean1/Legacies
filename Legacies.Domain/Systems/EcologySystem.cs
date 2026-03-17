@@ -1,4 +1,5 @@
-﻿using Legacies.Domain.Enums;
+﻿using Legacies.Domain.Constants;
+using Legacies.Domain.Enums;
 using Legacies.Domain.Interfaces;
 using Legacies.Domain.Models;
 
@@ -18,10 +19,10 @@ namespace Legacies.Domain.Systems
                 RegionSupportBand previousBand = region.SupportBand;
 
                 int calculatedSupport = (int)Math.Round(
-                    region.BaseEcologicalSupport * (1m - region.CurrentEnvironmentalPressure),
+                    region.BaseEcologicalSupport * (EcologyConstants.FullSupportRatio - region.CurrentEnvironmentalPressure),
                     MidpointRounding.AwayFromZero);
 
-                region.CurrentMonthlySupport = Math.Max(0, calculatedSupport);
+                region.CurrentMonthlySupport = Math.Max(EcologyConstants.MinimumMonthlySupport, calculatedSupport);
                 region.SupportBand = ClassifySupportBand(region.BaseEcologicalSupport, region.CurrentMonthlySupport);
 
                 result.RegionConditionChanges.Add(
@@ -38,24 +39,24 @@ namespace Legacies.Domain.Systems
 
         private static RegionSupportBand ClassifySupportBand(int baseSupport, int currentSupport)
         {
-            if (baseSupport <= 0)
+            if (baseSupport <= EcologyConstants.MinimumMonthlySupport)
             {
                 return RegionSupportBand.Harsh;
             }
 
             decimal supportRatio = currentSupport / (decimal)baseSupport;
 
-            if (supportRatio < 0.65m)
+            if (supportRatio < EcologyConstants.HarshSupportRatioThreshold)
             {
                 return RegionSupportBand.Harsh;
             }
 
-            if (supportRatio < 0.90m)
+            if (supportRatio < EcologyConstants.StrainedSupportRatioThreshold)
             {
                 return RegionSupportBand.Strained;
             }
 
-            if (supportRatio > 1.10m)
+            if (supportRatio > EcologyConstants.AbundantSupportRatioThreshold)
             {
                 return RegionSupportBand.Abundant;
             }

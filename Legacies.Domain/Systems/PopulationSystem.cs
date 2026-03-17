@@ -1,4 +1,5 @@
-﻿using Legacies.Domain.Enums;
+﻿using Legacies.Domain.Constants;
+using Legacies.Domain.Enums;
 using Legacies.Domain.Interfaces;
 using Legacies.Domain.Models;
 
@@ -25,8 +26,8 @@ namespace Legacies.Domain.Systems
                 }
 
                 int regionalPopulation = regionPopulations.Sum(population => population.Size);
-                decimal supportRatio = regionalPopulation == 0
-                    ? 0m
+                decimal supportRatio = regionalPopulation == PopulationConstants.MinimumPopulationSize
+                    ? PopulationConstants.MinimumSupportRatio
                     : region.CurrentMonthlySupport / (decimal)regionalPopulation;
 
                 foreach (PopulationGroup population in regionPopulations)
@@ -36,9 +37,9 @@ namespace Legacies.Domain.Systems
                     decimal previousSupportPressure = population.SupportPressure;
 
                     int populationDelta = CalculatePopulationDelta(population.Size, supportRatio, species);
-                    population.Size = Math.Max(0, population.Size + populationDelta);
-                    population.SupportPressure = Math.Clamp(1m - supportRatio, 0m, 1.5m);
-                    population.Health = CalculateHealth(population.Health, supportRatio, population.Size == 0);
+                    population.Size = Math.Max(PopulationConstants.MinimumPopulationSize, population.Size + populationDelta);
+                    population.SupportPressure = Math.Clamp(PopulationConstants.DefaultHealth - supportRatio, PopulationConstants.MinimumSupportPressure, PopulationConstants.MaximumSupportPressure);
+                    population.Health = CalculateHealth(population.Health, supportRatio, population.Size == PopulationConstants.MinimumPopulationSize);
 
                     result.PopulationChanges.Add(
                         new PopulationChangeSummary(
@@ -57,38 +58,38 @@ namespace Legacies.Domain.Systems
 
         private static int CalculatePopulationDelta(int currentSize, decimal supportRatio, Species species)
         {
-            if (currentSize <= 0)
+            if (currentSize <= PopulationConstants.MinimumPopulationSize)
             {
-                return 0;
+                return PopulationConstants.NoPopulationChange;
             }
 
-            if (supportRatio >= 1.05m)
+            if (supportRatio >= PopulationConstants.MinimumSupportRatioForGrowth)
             {
-                decimal growthRate = Math.Min(species.MonthlyGrowthRate + ((supportRatio - 1m) * 0.15m), 0.08m);
-                return Math.Max(1, (int)Math.Round(currentSize * growthRate, MidpointRounding.AwayFromZero));
+                decimal growthRate = Math.Min(species.MonthlyGrowthRate + ((supportRatio - PopulationConstants.DefaultHealth) * PopulationConstants.GrowthBonusPerSupportPoint), PopulationConstants.MaximumGrowthRate);
+                return Math.Max(PopulationConstants.MinimumPopulationIncrease, (int)Math.Round(currentSize * growthRate, MidpointRounding.AwayFromZero));
             }
 
-            if (supportRatio >= 0.95m)
+            if (supportRatio >= PopulationConstants.MinimumSupportRatioForStability)
             {
-                return 0;
+                return PopulationConstants.NoPopulationChange;
             }
 
-            decimal declineRate = Math.Min(((1m - supportRatio) * species.ScarcityDeclineRate) + 0.01m, 0.35m);
-            return -Math.Max(1, (int)Math.Round(currentSize * declineRate, MidpointRounding.AwayFromZero));
+            decimal declineRate = Math.Min(((PopulationConstants.DefaultHealth - supportRatio) * species.ScarcityDeclineRate) + PopulationConstants.BaseDeclineRatePenalty, PopulationConstants.MaximumDeclineRate);
+            return -Math.Max(PopulationConstants.MinimumPopulationDecrease, (int)Math.Round(currentSize * declineRate, MidpointRounding.AwayFromZero));
         }
 
         private static decimal CalculateHealth(decimal currentHealth, decimal supportRatio, bool populationCollapsed)
         {
             if (populationCollapsed)
             {
-                return 0m;
+                return PopulationConstants.MinimumHealth;
             }
 
-            decimal healthDelta = supportRatio >= 1m
-                ? 0.03m
-                : -Math.Min(0.20m, ((1m - supportRatio) * 0.25m) + 0.02m);
+            decimal healthDelta = supportRatio >= PopulationConstants.DefaultHealth
+                ? PopulationConstants.HealthRecoveryPerMonth
+                : -Math.Min(PopulationConstants.MaximumHealthDecline, ((PopulationConstants.DefaultHealth - supportRatio) * PopulationConstants.HealthDeclinePerSupportGap) + PopulationConstants.BaseHealthDecline);
 
-            return Math.Clamp(currentHealth + healthDelta, 0m, 1m);
+            return Math.Clamp(currentHealth + healthDelta, PopulationConstants.MinimumHealth, PopulationConstants.MaximumHealth);
         }
     }
 }

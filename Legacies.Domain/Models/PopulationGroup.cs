@@ -1,4 +1,6 @@
-﻿namespace Legacies.Domain.Models
+﻿using Legacies.Domain.Constants;
+
+namespace Legacies.Domain.Models
 {
     public sealed class PopulationGroup
     {
@@ -12,7 +14,7 @@
 
         public decimal SupportPressure { get; set; }
 
-        public decimal Health { get; set; } = 1m;
+        public decimal Health { get; set; } = PopulationConstants.DefaultHealth;
 
         public int? SocietyId { get; set; }
     }
