@@ -83,11 +83,13 @@ At a high level, Legacies runs like this:
 The canonical monthly simulation runner.
 
 Responsibilities:
-- advance time
-- execute systems in universal order
-- collect system results
+- store explicitly registered broad systems
+- sort systems by canonical phase and stable registration order
+- advance time through the `CalendarSystem`
+- execute the monthly pipeline in universal order
+- return a `SimulationStepResult` for every tick
 - maintain deterministic sequencing
-- expose enough information for logging and debugging
+- expose structured execution output for logging and Chronicle rendering
 
 ### World Model
 The persistent simulation state.
@@ -101,7 +103,7 @@ Includes:
 - settlements/routes
 - environmental support conditions
 - discoveries/advancements
-- world events and chronicle context
+- structured chronicle history
 
 ### World Generation
 World Generation is not a different game mode with fake rules.
@@ -177,6 +179,10 @@ Everything beyond that should build on this slice, not replace it.
 ### Avoid Client-Owned Simulation Logic
 Do not place world rules in the console layer.
 
+### Keep Pacing in the Client
+The domain should not contain `Thread.Sleep` or presentation pacing.
+If a demo run wants delay, the client owns it.
+
 ### Avoid Duplicate Rule Paths
 Do not create separate “worldgen-only truth” and “active-play truth” unless absolutely necessary and documented.
 
@@ -210,6 +216,7 @@ These are expected later, but should build on the same architecture:
 The architecture is succeeding when:
 
 - systems are easy to reason about
+- the monthly pipeline order is obvious from the engine and system metadata
 - state changes are explainable
 - world generation and active play feel like the same world
 - new systems slot into the monthly loop cleanly

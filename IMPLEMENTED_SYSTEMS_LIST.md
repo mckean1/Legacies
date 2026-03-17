@@ -23,17 +23,17 @@ A feature is not fully complete until:
 
 ## Current Project State
 
-As of the current repo baseline, Legacies is in project bootstrap stage.
+Legacies now has a real Phase 1 simulation backbone.
 
 Primary near-term goal:
-establish the simulation foundation and first vertical slice.
+extend the deterministic backbone into deeper geography, movement, society, settlement, and world generation behavior.
 
 ---
 
 ## Priority Roadmap
 
 ### Phase 0 — Documentation and Canonical Foundation
-Status: `IN PROGRESS`
+Status: `COMPLETE`
 
 Goals:
 - establish project docs
@@ -56,7 +56,7 @@ Deliverables:
 ---
 
 ### Phase 1 — SimulationEngine Backbone
-Status: `PLANNED`
+Status: `COMPLETE`
 
 Goals:
 - introduce `SimulationEngine`
@@ -68,10 +68,18 @@ Goals:
 Success criteria:
 - a world can advance deterministically month by month
 
+Implemented now:
+- explicit `ISimulationSystem` contract
+- canonical ordered monthly pipeline owned by `SimulationEngine`
+- deterministic ordering by system phase and stable registration order
+- `SimulationContext` and `SimulationStepResult`
+- pacing removed from the domain
+- structured chronicle events rendered by the client
+
 ---
 
 ### Phase 2 — Geography and Regional Support Foundation
-Status: `PLANNED`
+Status: `PARTIAL`
 
 Goals:
 - introduce `Region`
@@ -82,10 +90,15 @@ Goals:
 Success criteria:
 - regions differ meaningfully in support conditions
 
+Current status notes:
+- `Region` supports base ecological support, seasonal volatility, environmental pressure, monthly support, and support bands
+- `EnvironmentSystem` and `EcologySystem` update regional support deterministically each month
+- adjacency/connectivity is not implemented yet
+
 ---
 
 ### Phase 3 — Species and Population Foundation
-Status: `PLANNED`
+Status: `PARTIAL`
 
 Goals:
 - introduce `Species`
@@ -95,6 +108,11 @@ Goals:
 
 Success criteria:
 - populations can survive, expand, shrink, or fail based on conditions
+
+Current status notes:
+- `Species` has simple monthly growth and scarcity decline rates
+- `PopulationGroup` tracks size, support pressure, and health
+- `PopulationSystem` applies deterministic ecological response each month
 
 ---
 
@@ -138,7 +156,7 @@ Success criteria:
 ---
 
 ### Phase 7 — Chronicle Foundation
-Status: `PLANNED`
+Status: `PARTIAL`
 
 Goals:
 - introduce structured chronicle events
@@ -148,6 +166,12 @@ Goals:
 
 Success criteria:
 - the simulation produces meaningful readable historical output
+
+Current status notes:
+- `ChronicleEvent` is a structured domain output
+- `ChronicleSystem` emits events from regional and population changes
+- the client renders monthly chronicle lines from `SimulationStepResult`
+- duplicate suppression is still basic and lens-specific Chronicle curation is deferred
 
 ---
 
@@ -186,3 +210,11 @@ Status: `COMPLETE`
 Notes:
 - solution and initial projects exist
 - repo is ready for foundational design/docs work
+
+### Phase 1 Backbone Slice
+Status: `COMPLETE`
+
+Notes:
+- broad simulation systems are registered explicitly and executed in canonical order
+- only `CalendarSystem`, `EnvironmentSystem`, `EcologySystem`, `PopulationSystem`, and `ChronicleSystem` have real behavior so far
+- `MovementSystem`, `SocialSystem`, `SettlementSystem`, `KnowledgeSystem`, `InteractionSystem`, `PoliticalSystem`, and `EvaluationSystem` are wired placeholders inside the same backbone

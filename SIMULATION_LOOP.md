@@ -25,16 +25,18 @@ Seasonality can be layered on top of monthly simulation rather than replacing it
 
 The SimulationEngine should process each month in a stable order.
 
-## Proposed Early Order
+The engine owns this ordering. Systems do not decide runtime order themselves, and the client does not orchestrate the pipeline.
 
-### 1. Advance Calendar Context
+## Canonical Phase 1 Order
+
+### 1. CalendarSystem
 Update current month/year/seasonal context.
 
 Outputs:
 - current world date
 - seasonal context flags if needed
 
-### 2. Environment and Regional Conditions
+### 2. EnvironmentSystem
 Update regional environmental state.
 
 Examples:
@@ -43,7 +45,7 @@ Examples:
 - local fertility/productivity shifts
 - hazards or stressors
 
-### 3. Ecological Support and Resource Availability
+### 3. EcologySystem
 Resolve what each region can currently support.
 
 Examples:
@@ -52,7 +54,7 @@ Examples:
 - scarcity or abundance signals
 - pressure on mobile vs anchored populations
 
-### 4. Population and Species State
+### 4. PopulationSystem
 Update biological and demographic state.
 
 Examples:
@@ -61,7 +63,7 @@ Examples:
 - local persistence
 - species continuity/extinction pressure
 
-### 5. Movement and Spatial Reorganization
+### 5. MovementSystem
 Resolve how populations respond spatially.
 
 Examples:
@@ -72,7 +74,7 @@ Examples:
 - route usage
 - home-range stabilization
 
-### 6. Social Group Formation and Continuity
+### 6. SocialSystem
 Resolve social cohesion and group identity.
 
 Examples:
@@ -81,7 +83,7 @@ Examples:
 - identity persistence
 - social organization deepening
 
-### 7. Settlement and Territorial Pattern Updates
+### 7. SettlementSystem
 Resolve anchored occupation and settlement state.
 
 Examples:
@@ -91,7 +93,7 @@ Examples:
 - abandonment
 - territorial core formation
 
-### 8. Discovery / Learning / Advancement
+### 8. KnowledgeSystem
 Resolve new learned capabilities or retained knowledge.
 
 Examples:
@@ -100,7 +102,7 @@ Examples:
 - production improvements
 - organizational development
 
-### 9. Intergroup Interaction
+### 9. InteractionSystem
 Resolve contact between societies/polities/populations.
 
 Examples:
@@ -111,7 +113,7 @@ Examples:
 - coexistence
 - influence
 
-### 10. Political and Structural Development
+### 10. PoliticalSystem
 Resolve deeper organizational outcomes.
 
 Examples:
@@ -120,12 +122,12 @@ Examples:
 - authority structure strengthening
 - internal cohesion changes
 
-### 11. Chronicle Candidate Extraction
+### 11. ChronicleSystem
 Identify meaningful world changes worth surfacing to the player.
 
 This stage should produce structured event candidates, not raw text first.
 
-### 12. Post-Tick Evaluation Hooks
+### 12. EvaluationSystem
 Run observer/evaluator logic needed by world generation and other meta systems.
 
 Examples:
@@ -179,6 +181,13 @@ Prefer:
 3. chronicle rules decide what is worth surfacing
 4. the client renders player-facing text
 
+In Phase 1, the monthly tick returns a `SimulationStepResult` containing:
+- start and end date
+- executed systems in order
+- structured chronicle events emitted that month
+- lightweight region and population change summaries
+- optional notes
+
 This keeps simulation truth and presentation cleaner.
 
 ---
@@ -196,20 +205,23 @@ Avoid:
 - hidden time-based randomness
 - client-driven world mutations
 
+Phase 1 rule:
+- systems are ordered first by canonical phase and then by stable registration order
+
 ---
 
 ## Early Implementation Goal
 
 The first implementation of the monthly loop does not need every future subsystem.
 
-It does need:
+Phase 1 currently implements real behavior for:
 - date progression
-- environmental/support update
+- environmental update
+- ecology/support update
 - population update
-- movement update
-- society continuity/emergence
-- settlement update
-- chronicle candidate generation
+- chronicle event generation
+
+The remaining broad systems are wired into the same ordered pipeline as placeholders so later work extends the same backbone instead of replacing it.
 
 That is enough to prove the backbone.
 

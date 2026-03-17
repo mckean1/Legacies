@@ -42,16 +42,16 @@ Owns:
 - settlements/routes
 - discoveries
 - global identifiers / registries if needed
-- chronicle history or chronicle event stream references
+- chronicle history
 
 ### WorldDate
 Represents simulation time.
 
-Suggested fields:
+Current implemented fields:
 - year
 - month
 - absolute month index
-- seasonal helpers if needed
+- derived season helper
 
 ---
 
@@ -60,14 +60,16 @@ Suggested fields:
 ### Region
 A simulation area where ecology, populations, and societies exist.
 
-Suggested early fields:
+Current Phase 1 shape:
 - id
-- name or generated label
-- terrain profile
-- climate profile
-- fertility/support characteristics
-- neighboring region references
-- current support state
+- name
+- base ecological support
+- base environmental pressure
+- seasonal volatility
+- seasonal peak month
+- current environmental pressure
+- current monthly support
+- current support band
 
 ### RegionConnection
 Represents movement/contact adjacency between regions.
@@ -84,25 +86,22 @@ Suggested purpose:
 ### Species
 Represents a biological lineage/type in the world.
 
-Suggested early fields:
+Current Phase 1 shape:
 - id
 - name
-- species traits
-- preferred environments
-- mobility characteristics
-- baseline survival/reproduction tendencies
+- monthly growth rate
+- scarcity decline rate
 
 ### PopulationGroup
 Represents a concrete population presence of a species in the world.
 
-Suggested early fields:
+Current Phase 1 shape:
 - id
 - species id
 - current region id
 - size
 - support pressure
-- movement tendency
-- continuity markers
+- health
 - affiliated society id if applicable
 
 This is likely more important early than abstract total species counts.
@@ -114,16 +113,10 @@ This is likely more important early than abstract total species counts.
 ### Society
 Represents a persistent social identity/grouping emerging from populations.
 
-Suggested early fields:
+Current Phase 1 shape:
 - id
 - name
-- member population references or ownership structure
-- origin date
-- continuity state
-- organization depth
-- home region or home network
-- settlement/mobility pattern
-- relationship markers to other societies
+- optional home region id
 
 In early development, this can be the first controllable social/political layer.
 
@@ -141,14 +134,11 @@ A polity should emerge from actual organization, stability, and structure.
 ### Settlement
 Represents an anchored site of occupation.
 
-Suggested early fields:
+Current Phase 1 shape:
 - id
+- name
 - region id
-- owning society id
-- settlement type/stage
-- continuity age
-- support value
-- occupancy level
+- optional owning society id
 
 ### Route
 Represents a recurring movement or connection pattern.
@@ -184,14 +174,25 @@ This can start simple and grow later.
 ### ChronicleEvent
 Represents a structured, player-facing historical event candidate or final event.
 
-Suggested early fields:
-- id
+Current Phase 1 shape:
 - date
 - event type
-- involved entity references
-- source cause references
 - importance
-- player-facing text payload or render data
+- message
+- optional region, population, species, society, and settlement references
+
+### SimulationStepResult
+Represents one explainable monthly step.
+
+Current Phase 1 shape:
+- tick index
+- start date
+- end date
+- executed systems in order
+- structured chronicle events
+- region condition changes
+- population change summaries
+- optional notes
 
 Prefer structured event data over raw strings alone.
 

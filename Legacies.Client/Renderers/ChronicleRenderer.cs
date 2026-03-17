@@ -1,24 +1,27 @@
-﻿using Legacies.Domain.Models;
-
-namespace Legacies.Client.Renderers
+﻿namespace Legacies.Client.Renderers
 {
-    public class ChronicleRenderer
+    public sealed class ChronicleRenderer
     {
-        private readonly Chronicle _chronicle;
-
-        public ChronicleRenderer(Chronicle chronicle)
+        public void Render(Legacies.Domain.Models.SimulationStepResult stepResult)
         {
-            _chronicle = chronicle;
+            Console.WriteLine($"{stepResult.StartDate} -> {stepResult.EndDate} ({stepResult.EndDate.Season})");
+            Console.WriteLine($"Systems: {string.Join(" -> ", stepResult.ExecutedSystems)}");
 
-            Console.CursorVisible = false;
-        }
+            if (stepResult.ChronicleEvents.Count == 0)
+            {
+                Console.WriteLine("Chronicle: none");
+            }
+            else
+            {
+                Console.WriteLine("Chronicle:");
 
-        public void Render()
-        {
-            string output = $"Year: {_chronicle.Year}, Month: {_chronicle.Month}";
+                foreach (Legacies.Domain.Models.ChronicleEvent chronicleEvent in stepResult.ChronicleEvents)
+                {
+                    Console.WriteLine($"- [{chronicleEvent.Category}] {chronicleEvent.Message}");
+                }
+            }
 
-            Console.SetCursorPosition(0, 0);
-            Console.Write(output.PadRight(Console.WindowWidth));
+            Console.WriteLine();
         }
     }
 }
