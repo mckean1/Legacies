@@ -9,11 +9,16 @@ namespace Legacies.Client.Renderers
         public ChronicleRenderer(Chronicle chronicle)
         {
             _chronicle = chronicle;
+
+            Console.CursorVisible = false;
         }
 
-        public string Render()
+        public void Render()
         {
-            return $"Year: {_chronicle.Year}, Month: {_chronicle.Month}";
+            string output = $"Year: {_chronicle.Year}, Month: {_chronicle.Month}";
+
+            Console.SetCursorPosition(0, 0);
+            Console.Write(output.PadRight(Console.WindowWidth));
         }
     }
 }

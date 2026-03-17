@@ -9,7 +9,5 @@ ChronicleRenderer chronicleRenderer = new ChronicleRenderer(new Chronicle(simula
 while (world.CurrentDate.Year < 10)
 {
     simulationEngine.Tick();
-
-    Console.Clear();
-    Console.WriteLine(chronicleRenderer.Render());
+    chronicleRenderer.Render();
 }
