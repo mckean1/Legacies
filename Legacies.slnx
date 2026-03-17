@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Legacies.Client/Legacies.Client.csproj" />
+  <Project Path="Legacies.Domain/Legacies.Domain.csproj" />
+</Solution>
