@@ -37,6 +37,8 @@ Examples:
 ### 2. Run Monthly Simulation
 Advance the world month by month through the SimulationEngine.
 
+This uses the same pressure-driven causal pipeline described in `SIMULATION_LOOP.md` and governed by `PRESSURES.md`; world generation should not bypass that model with special-case outcome shortcuts.
+
 ### 3. Observe World State
 Derived observer/evaluator layers inspect the world without rewriting it.
 

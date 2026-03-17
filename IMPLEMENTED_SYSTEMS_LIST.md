@@ -23,7 +23,14 @@ A feature is not fully complete until:
 
 ## Current Project State
 
-Legacies now has a real Phase 1 simulation backbone.
+Legacies now has a real Phase 1 simulation backbone and a canonical pressure-first design foundation.
+
+The pressure model is part of the project canon through `PRESSURES.md`, but the full framework is still only partially implemented in code.
+
+Current implemented pressure foundation:
+- regions have early environmental/support state updated by `EnvironmentSystem` and `EcologySystem`
+- populations have early support-pressure/health response updated by `PopulationSystem`
+- pressure-driven movement, social, settlement, interaction, and political behavior remain future work
 
 Primary near-term goal:
 extend the deterministic backbone into deeper geography, movement, society, settlement, and world generation behavior.
@@ -39,6 +46,7 @@ Goals:
 - establish project docs
 - define architecture boundaries
 - define the universal monthly simulation loop
+- define the pressure-first causal model
 - define core domain concepts
 - define world generation philosophy
 - define chronicle philosophy
@@ -51,6 +59,7 @@ Deliverables:
 - `DATA_MODEL.md`
 - `WORLD_GENERATION.md`
 - `CHRONICLE.md`
+- `PRESSURES.md`
 - `IMPLEMENTED_SYSTEMS_LIST.md`
 
 ---
@@ -92,6 +101,7 @@ Success criteria:
 
 Current status notes:
 - `Region` supports base ecological support, seasonal volatility, environmental pressure, monthly support, and support bands
+- this is the early regional pressure foundation, not full region pressure ownership as described in `PRESSURES.md`
 - `EnvironmentSystem` and `EcologySystem` update regional support deterministically each month
 - adjacency/connectivity is not implemented yet
 
@@ -112,6 +122,7 @@ Success criteria:
 Current status notes:
 - `Species` has simple monthly growth and scarcity decline rates
 - `PopulationGroup` tracks size, support pressure, and health
+- this is the early population pressure foundation, not the full survival/movement/recovery pressure ownership described in `PRESSURES.md`
 - `PopulationSystem` applies deterministic ecological response each month
 
 ---
@@ -127,6 +138,9 @@ Goals:
 Success criteria:
 - populations respond spatially to ecological reality
 
+Current status notes:
+- pressure-driven movement behavior is not implemented yet
+
 ---
 
 ### Phase 5 — Society Emergence
@@ -140,6 +154,9 @@ Goals:
 Success criteria:
 - at least one society can emerge from simulated conditions
 
+Current status notes:
+- pressure-driven social behavior is still future work
+
 ---
 
 ### Phase 6 — Settlement Foundation
@@ -152,6 +169,9 @@ Goals:
 
 Success criteria:
 - the world can produce durable places, not just moving populations
+
+Current status notes:
+- pressure-driven settlement viability, founding, and abandonment behavior are still future work
 
 ---
 
@@ -218,3 +238,4 @@ Notes:
 - broad simulation systems are registered explicitly and executed in canonical order
 - only `CalendarSystem`, `EnvironmentSystem`, `EcologySystem`, `PopulationSystem`, and `ChronicleSystem` have real behavior so far
 - `MovementSystem`, `SocialSystem`, `SettlementSystem`, `KnowledgeSystem`, `InteractionSystem`, `PoliticalSystem`, and `EvaluationSystem` are wired placeholders inside the same backbone
+- the current pressure-first implementation is therefore limited to early environmental/ecological/population behavior rather than a full end-to-end pressure framework

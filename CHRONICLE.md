@@ -38,6 +38,8 @@ Only post-initialization change should be chronicled.
 ### 3. No Debug Dumps
 Avoid raw internal metrics in normal player-facing messages.
 
+That includes raw pressure telemetry. Chronicle output should usually surface the consequences of pressure-driven change, not the underlying numbers themselves.
+
 ### 4. No Redundant Spam
 Repeated low-value messages destroy readability.
 
@@ -81,10 +83,11 @@ Examples of low-value or non-player-facing content:
 
 Prefer a layered approach:
 
-1. simulation systems detect meaningful outcomes
-2. systems emit structured event candidates
-3. chronicle rules decide what is worthy of surfacing
-4. final player-facing text is rendered
+1. upstream systems establish or modify pressures
+2. later systems detect meaningful outcomes caused by that updated pressure state
+3. systems emit structured event candidates
+4. chronicle rules decide what is worthy of surfacing
+5. final player-facing text is rendered
 
 This avoids mixing simulation truth with direct console string construction too early.
 

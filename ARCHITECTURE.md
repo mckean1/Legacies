@@ -22,6 +22,9 @@ Given the same seed and the same inputs, the simulation should produce the same 
 ### Explainable State
 Major events and outcomes should be traceable to prior simulation conditions.
 
+### Pressure-First Causality
+The intended architecture is pressure-first as defined in `PRESSURES.md`: systems should generally modify entity-owned pressures first, and later systems should react to that updated pressure state. Current code only implements the early regional and population foundation of that model.
+
 ### Layered Responsibility
 The domain should own world truth. The client should own presentation and interaction.
 
@@ -69,7 +72,7 @@ At a high level, Legacies runs like this:
 
 1. Create or load a world.
 2. Run the SimulationEngine month by month.
-3. Systems update the world in a stable universal order.
+3. Systems update the world in a stable universal order, primarily by establishing and reacting to pressures.
 4. State changes produce world consequences and chronicleable outcomes.
 5. During world generation, readiness/evaluation logic determines when the world can hand off to player selection.
 6. The player selects a real generated start.

@@ -2,7 +2,13 @@
 
 ## Purpose
 
-This document defines the pressure model for Legacies.
+This document is the canonical design guidance for the pressure model in Legacies.
+
+It defines the intended semantics, ownership, propagation, and long-term direction of pressure-first simulation.
+
+Current implementation is still partial. The repository has early regional and population pressure-like state in code, but it does not yet implement the full pressure framework described here across all systems.
+
+Read this document as canonical design direction for how the simulation should work, not as a claim that every pressure behavior below is already fully implemented.
 
 Pressures are the primary causal substrate of the simulation.
 

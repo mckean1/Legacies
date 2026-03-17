@@ -6,6 +6,8 @@ This document defines the universal monthly simulation pipeline for Legacies.
 
 This loop should be the backbone for both World Generation and Active Play.
 
+The monthly causal flow is pressure-driven and governed by `PRESSURES.md`: upstream systems establish or modify pressure state, downstream systems react to updated pressures, and the Chronicle surfaces meaningful consequences rather than raw pressure telemetry.
+
 ---
 
 ## Core Rule
@@ -123,7 +125,7 @@ Examples:
 - internal cohesion changes
 
 ### 11. ChronicleSystem
-Identify meaningful world changes worth surfacing to the player.
+Identify meaningful world changes worth surfacing to the player after upstream pressure-driven consequences have settled.
 
 This stage should produce structured event candidates, not raw text first.
 
@@ -142,11 +144,10 @@ Examples:
 
 This order preserves cause-and-effect:
 
-- environment affects support
-- support affects populations
-- populations affect movement
-- movement affects social and settlement stability
-- stability affects discovery, interaction, and politics
+- environment establishes or modifies regional pressures
+- ecology turns those pressures into support, scarcity, and opportunity conditions
+- populations react and update downstream survival and movement pressures
+- downstream systems resolve spatial, social, settlement, and political consequences from the updated pressure state
 - outcomes then feed the Chronicle and evaluation layers
 
 Later systems should slot into this causal spine rather than bypass it.

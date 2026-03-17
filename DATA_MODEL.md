@@ -3,9 +3,10 @@
 ## Purpose
 
 This document defines the initial conceptual data model for Legacies.
-
 This is not meant to freeze every class immediately.
 It defines the core simulation nouns and their ownership boundaries.
+
+`PRESSURES.md` is canonical for pressure semantics and ownership. This document describes the current and near-term data shape that supports that direction, while acknowledging that broader entity-owned pressure sets are still only partially implemented.
 
 ---
 
@@ -71,6 +72,8 @@ Current Phase 1 shape:
 - current monthly support
 - current support band
 
+Current implementation is an early regional pressure foundation. Regions currently hold environmental/support state and will later own richer regional pressure state as defined in `PRESSURES.md`.
+
 ### RegionConnection
 Represents movement/contact adjacency between regions.
 
@@ -106,6 +109,8 @@ Current Phase 1 shape:
 
 This is likely more important early than abstract total species counts.
 
+Current implementation is an early population pressure foundation. Support pressure and health capture only part of the intended pressure ownership; fuller survival, movement, displacement, and recovery pressure state is still future work.
+
 ---
 
 ## Social Layer
@@ -120,12 +125,16 @@ Current Phase 1 shape:
 
 In early development, this can be the first controllable social/political layer.
 
+Canonical direction: societies will eventually own richer cohesion, continuity, and fragmentation pressures, but that broader pressure set is not implemented yet.
+
 ### Polity
 Represents a more structured political form when warranted by simulation truth.
 
 Important rule:
 Do not force all societies to become polities early.
 A polity should emerge from actual organization, stability, and structure.
+
+Canonical direction: polities will eventually own legitimacy, authority, stability, and administrative-strain pressures, but that broader pressure set is not implemented yet.
 
 ---
 
@@ -139,6 +148,8 @@ Current Phase 1 shape:
 - name
 - region id
 - optional owning society id
+
+Canonical direction: settlements will eventually own viability, growth, and abandonment pressures, but that broader pressure set is not implemented yet.
 
 ### Route
 Represents a recurring movement or connection pattern.
