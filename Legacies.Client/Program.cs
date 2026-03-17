@@ -1,4 +1,5 @@
-﻿using Legacies.Client.Renderers;
+﻿using Legacies.Client.Constants;
+using Legacies.Client.Renderers;
 using Legacies.Domain.Models;
 using Legacies.Domain.Systems;
 
@@ -8,7 +9,7 @@ RegisterSystems(simulationEngine);
 
 ChronicleRenderer chronicleRenderer = new ChronicleRenderer();
 
-foreach (SimulationStepResult stepResult in simulationEngine.RunMonths(18))
+foreach (SimulationStepResult stepResult in simulationEngine.RunMonths(ProgramConstants.SampleSimulationMonths))
 {
     chronicleRenderer.Render(stepResult);
 }

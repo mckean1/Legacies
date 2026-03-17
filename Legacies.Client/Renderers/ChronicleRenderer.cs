@@ -1,8 +1,10 @@
-﻿namespace Legacies.Client.Renderers
+﻿using Legacies.Domain.Models;
+
+namespace Legacies.Client.Renderers
 {
     public sealed class ChronicleRenderer
     {
-        public void Render(Legacies.Domain.Models.SimulationStepResult stepResult)
+        public void Render(SimulationStepResult stepResult)
         {
             Console.WriteLine($"{stepResult.StartDate} -> {stepResult.EndDate} ({stepResult.EndDate.Season})");
             Console.WriteLine($"Systems: {string.Join(" -> ", stepResult.ExecutedSystems)}");
@@ -15,7 +17,7 @@
             {
                 Console.WriteLine("Chronicle:");
 
-                foreach (Legacies.Domain.Models.ChronicleEvent chronicleEvent in stepResult.ChronicleEvents)
+                foreach (ChronicleEvent chronicleEvent in stepResult.ChronicleEvents)
                 {
                     Console.WriteLine($"- [{chronicleEvent.Category}] {chronicleEvent.Message}");
                 }
