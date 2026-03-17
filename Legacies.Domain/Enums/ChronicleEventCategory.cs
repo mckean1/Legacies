@@ -7,6 +7,8 @@ namespace Legacies.Domain.Enums
         PopulationGrowth = 3,
         PopulationDecline = 4,
         PopulationCollapse = 5,
-        Evaluation = 6
+        Migration = 6,
+        Displacement = 7,
+        Evaluation = 8
     }
 }

@@ -6,7 +6,7 @@ This document is the canonical design guidance for the pressure model in Legacie
 
 It defines the intended semantics, ownership, propagation, and long-term direction of pressure-first simulation.
 
-Current implementation is still partial. The repository has early regional and population pressure-like state in code, but it does not yet implement the full pressure framework described here across all systems.
+Current implementation is still partial. The repository has early regional, population, and movement pressure-like state in code, but it does not yet implement the full pressure framework described here across all systems.
 
 Read this document as canonical design direction for how the simulation should work, not as a claim that every pressure behavior below is already fully implemented.
 
@@ -445,10 +445,10 @@ A pressure-first monthly flow may look like this:
    - converts environmental state into support, scarcity, abundance, and crowding pressures
 
 4. `PopulationSystem`
-   - updates survival, reproduction, and movement pressures on populations
+   - updates biological state and survival pressure proxies on populations
 
 5. `MovementSystem`
-   - reacts to movement/displacement/opportunity pressures and applies spatial changes
+   - updates movement/displacement/opportunity pressures and applies spatial changes across region adjacency
 
 6. `SocialSystem`
    - updates cohesion, fragmentation, and continuity pressures based on demographic and spatial outcomes

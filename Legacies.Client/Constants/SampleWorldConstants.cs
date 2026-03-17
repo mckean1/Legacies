@@ -10,6 +10,7 @@ namespace Legacies.Client.Constants
             {
                 Id = 1,
                 Name = "Green Basin",
+                AdjacentRegionIds = [2],
                 BaseEcologicalSupport = 220,
                 BaseEnvironmentalPressure = 0.12m,
                 SeasonalVolatility = 0.14m,
@@ -19,7 +20,8 @@ namespace Legacies.Client.Constants
             {
                 Id = 2,
                 Name = "High Steppe",
-                BaseEcologicalSupport = 165,
+                AdjacentRegionIds = [1, 3],
+                BaseEcologicalSupport = 130,
                 BaseEnvironmentalPressure = 0.18m,
                 SeasonalVolatility = 0.16m,
                 SeasonalPeakMonth = 7
@@ -28,7 +30,8 @@ namespace Legacies.Client.Constants
             {
                 Id = 3,
                 Name = "River Plain",
-                BaseEcologicalSupport = 260,
+                AdjacentRegionIds = [2],
+                BaseEcologicalSupport = 340,
                 BaseEnvironmentalPressure = 0.10m,
                 SeasonalVolatility = 0.08m,
                 SeasonalPeakMonth = 4

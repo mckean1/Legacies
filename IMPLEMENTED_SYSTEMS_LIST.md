@@ -29,8 +29,10 @@ The pressure model is part of the project canon through `PRESSURES.md`, but the 
 
 Current implemented pressure foundation:
 - regions have early environmental/support state updated by `EnvironmentSystem` and `EcologySystem`
+- regions now also have explicit adjacency/connectivity for downstream spatial systems
 - populations have early support-pressure/health response updated by `PopulationSystem`
-- pressure-driven movement, social, settlement, interaction, and political behavior remain future work
+- populations also carry early movement/displacement/opportunity state updated by `MovementSystem`
+- pressure-driven social, settlement, interaction, and political behavior remain future work
 
 Primary near-term goal:
 extend the deterministic backbone into deeper geography, movement, society, settlement, and world generation behavior.
@@ -103,7 +105,7 @@ Current status notes:
 - `Region` supports base ecological support, seasonal volatility, environmental pressure, monthly support, and support bands
 - this is the early regional pressure foundation, not full region pressure ownership as described in `PRESSURES.md`
 - `EnvironmentSystem` and `EcologySystem` update regional support deterministically each month
-- adjacency/connectivity is not implemented yet
+- `Region` now has explicit deterministic adjacency for movement and later spatial systems
 
 ---
 
@@ -121,14 +123,14 @@ Success criteria:
 
 Current status notes:
 - `Species` has simple monthly growth and scarcity decline rates
-- `PopulationGroup` tracks size, support pressure, and health
-- this is the early population pressure foundation, not the full survival/movement/recovery pressure ownership described in `PRESSURES.md`
+- `PopulationGroup` tracks size, support pressure, health, home-region anchoring, recent movement, and early movement/displacement/opportunity state
+- this is still an early population pressure foundation, not the full survival/movement/recovery pressure ownership described in `PRESSURES.md`
 - `PopulationSystem` applies deterministic ecological response each month
 
 ---
 
 ### Phase 4 — Movement and Spatial Organization
-Status: `PLANNED`
+Status: `PARTIAL`
 
 Goals:
 - allow populations to move between regions
@@ -139,7 +141,10 @@ Success criteria:
 - populations respond spatially to ecological reality
 
 Current status notes:
-- pressure-driven movement behavior is not implemented yet
+- `MovementSystem` now performs deterministic full-group relocation across region adjacency
+- movement decisions are pressure-driven from local support strain, health loss, neighboring opportunity, move friction, home anchoring, and recent-move inertia
+- chronicle output now surfaces meaningful relocation and displacement outcomes
+- routes, home ranges, and deeper spatial organization are still future work
 
 ---
 
@@ -189,7 +194,7 @@ Success criteria:
 
 Current status notes:
 - `ChronicleEvent` is a structured domain output
-- `ChronicleSystem` emits events from regional and population changes
+- `ChronicleSystem` emits events from regional, population, and movement changes
 - the client renders monthly chronicle lines from `SimulationStepResult`
 - duplicate suppression is still basic and lens-specific Chronicle curation is deferred
 
@@ -236,6 +241,6 @@ Status: `COMPLETE`
 
 Notes:
 - broad simulation systems are registered explicitly and executed in canonical order
-- only `CalendarSystem`, `EnvironmentSystem`, `EcologySystem`, `PopulationSystem`, and `ChronicleSystem` have real behavior so far
-- `MovementSystem`, `SocialSystem`, `SettlementSystem`, `KnowledgeSystem`, `InteractionSystem`, `PoliticalSystem`, and `EvaluationSystem` are wired placeholders inside the same backbone
-- the current pressure-first implementation is therefore limited to early environmental/ecological/population behavior rather than a full end-to-end pressure framework
+- `CalendarSystem`, `EnvironmentSystem`, `EcologySystem`, `PopulationSystem`, `MovementSystem`, and `ChronicleSystem` now have real behavior
+- `SocialSystem`, `SettlementSystem`, `KnowledgeSystem`, `InteractionSystem`, `PoliticalSystem`, and `EvaluationSystem` remain wired placeholders inside the same backbone
+- the current pressure-first implementation now spans early environmental, ecological, population, and movement behavior rather than a full end-to-end pressure framework

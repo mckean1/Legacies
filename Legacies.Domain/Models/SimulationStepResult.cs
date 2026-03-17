@@ -24,5 +24,7 @@ namespace Legacies.Domain.Models
         public List<RegionConditionChange> RegionConditionChanges { get; } = new();
 
         public List<PopulationChangeSummary> PopulationChanges { get; } = new();
+
+        public List<MovementChangeSummary> MovementChanges { get; } = new();
     }
 }

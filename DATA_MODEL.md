@@ -68,6 +68,7 @@ Current Phase 1 shape:
 - base environmental pressure
 - seasonal volatility
 - seasonal peak month
+- adjacent region ids
 - current environmental pressure
 - current monthly support
 - current support band
@@ -76,6 +77,8 @@ Current implementation is an early regional pressure foundation. Regions current
 
 ### RegionConnection
 Represents movement/contact adjacency between regions.
+
+Current implementation uses direct region adjacency on `Region` for deterministic movement. A richer `RegionConnection` type is still optional future work if route difficulty or connectivity needs more explicit representation.
 
 Suggested purpose:
 - travel difficulty
@@ -104,12 +107,17 @@ Current Phase 1 shape:
 - current region id
 - size
 - support pressure
+- movement pressure
+- displacement pressure
+- opportunity pressure
 - health
+- optional home region id
+- optional last move absolute month
 - affiliated society id if applicable
 
 This is likely more important early than abstract total species counts.
 
-Current implementation is an early population pressure foundation. Support pressure and health capture only part of the intended pressure ownership; fuller survival, movement, displacement, and recovery pressure state is still future work.
+Current implementation is an early population pressure foundation. Support pressure and health are still simple proxies, but populations now also hold the first movement-oriented state used by `MovementSystem`. Fuller survival, movement, displacement, recovery, and source-aware pressure modeling are still future work.
 
 ---
 
@@ -203,6 +211,7 @@ Current Phase 1 shape:
 - structured chronicle events
 - region condition changes
 - population change summaries
+- movement change summaries
 - optional notes
 
 Prefer structured event data over raw strings alone.

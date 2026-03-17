@@ -34,6 +34,17 @@ namespace Legacies.Domain.Systems
                     world.ChronicleHistory.Add(chronicleEvent);
                 }
             }
+
+            foreach (MovementChangeSummary movementChange in result.MovementChanges.OrderBy(change => change.PopulationGroupId))
+            {
+                ChronicleEvent? chronicleEvent = CreateMovementEvent(world.CurrentDate, movementChange);
+
+                if (chronicleEvent is not null)
+                {
+                    result.ChronicleEvents.Add(chronicleEvent);
+                    world.ChronicleHistory.Add(chronicleEvent);
+                }
+            }
         }
 
         private static ChronicleEvent? CreateRegionEvent(WorldDate currentDate, RegionConditionChange change)
@@ -128,6 +139,53 @@ namespace Legacies.Domain.Systems
                 {
                     PopulationGroupId = change.PopulationGroupId,
                     RegionId = change.RegionId,
+                    SpeciesId = change.SpeciesId
+                };
+            }
+
+            return null;
+        }
+
+        private static ChronicleEvent? CreateMovementEvent(WorldDate currentDate, MovementChangeSummary change)
+        {
+            if (change.WasForced)
+            {
+                return new ChronicleEvent(
+                    currentDate.Clone(),
+                    ChronicleEventCategory.Displacement,
+                    change.OriginSupportBand == RegionSupportBand.Harsh ? ChronicleEventImportance.High : ChronicleEventImportance.Medium,
+                    $"Repeated strain drove the {change.SpeciesName} from {change.OriginRegionName} into {change.DestinationRegionName}.")
+                {
+                    PopulationGroupId = change.PopulationGroupId,
+                    RegionId = change.DestinationRegionId,
+                    SpeciesId = change.SpeciesId
+                };
+            }
+
+            if (change.DestinationSupportBand > change.OriginSupportBand)
+            {
+                return new ChronicleEvent(
+                    currentDate.Clone(),
+                    ChronicleEventCategory.Migration,
+                    ChronicleEventImportance.Medium,
+                    $"The {change.SpeciesName} left {change.OriginRegionName} for the stronger support of {change.DestinationRegionName}.")
+                {
+                    PopulationGroupId = change.PopulationGroupId,
+                    RegionId = change.DestinationRegionId,
+                    SpeciesId = change.SpeciesId
+                };
+            }
+
+            if (change.ReturnedHome)
+            {
+                return new ChronicleEvent(
+                    currentDate.Clone(),
+                    ChronicleEventCategory.Migration,
+                    ChronicleEventImportance.Low,
+                    $"The {change.SpeciesName} returned to {change.DestinationRegionName} after ranging out from {change.OriginRegionName}.")
+                {
+                    PopulationGroupId = change.PopulationGroupId,
+                    RegionId = change.DestinationRegionId,
                     SpeciesId = change.SpeciesId
                 };
             }

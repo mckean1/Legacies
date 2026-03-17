@@ -17,6 +17,8 @@ namespace Legacies.Domain.Models
 
         public int SeasonalPeakMonth { get; set; } = RegionConstants.DefaultSeasonalPeakMonth;
 
+        public List<int> AdjacentRegionIds { get; set; } = [];
+
         public decimal CurrentEnvironmentalPressure { get; set; }
 
         public int CurrentMonthlySupport { get; set; }

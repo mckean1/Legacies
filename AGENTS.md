@@ -85,7 +85,8 @@ Broad systems should primarily write the pressure state for their own layer.
 Examples:
 - `EnvironmentSystem` writes environmental pressures
 - `EcologySystem` writes support and scarcity pressures
-- `PopulationSystem` writes survival and movement pressures
+- `PopulationSystem` writes biological and survival-state response
+- `MovementSystem` writes movement, displacement, and local opportunity pressures
 - `SocialSystem` writes cohesion and fragmentation pressures
 - `SettlementSystem` writes site-viability pressures
 - `PoliticalSystem` writes legitimacy and structural pressures

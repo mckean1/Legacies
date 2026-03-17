@@ -14,7 +14,17 @@ namespace Legacies.Domain.Models
 
         public decimal SupportPressure { get; set; }
 
+        public decimal MovementPressure { get; set; }
+
+        public decimal DisplacementPressure { get; set; }
+
+        public decimal OpportunityPressure { get; set; }
+
         public decimal Health { get; set; } = PopulationConstants.DefaultHealth;
+
+        public int? HomeRegionId { get; set; }
+
+        public int? LastMoveAbsoluteMonth { get; set; }
 
         public int? SocietyId { get; set; }
     }

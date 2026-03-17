@@ -76,6 +76,13 @@ Examples:
 - route usage
 - home-range stabilization
 
+Current implemented slice:
+- deterministic full-group relocation only
+- movement only across explicit region adjacency
+- movement pressure from local support strain and health loss
+- destination opportunity from neighboring support and environmental conditions
+- staying resistance from home-region anchoring and recent-move inertia
+
 ### 6. SocialSystem
 Resolve social cohesion and group identity.
 
@@ -146,8 +153,9 @@ This order preserves cause-and-effect:
 
 - environment establishes or modifies regional pressures
 - ecology turns those pressures into support, scarcity, and opportunity conditions
-- populations react and update downstream survival and movement pressures
-- downstream systems resolve spatial, social, settlement, and political consequences from the updated pressure state
+- populations react biologically and update the state that later movement reads
+- movement resolves spatial response from updated regional and population pressures
+- downstream systems then resolve social, settlement, and political consequences from the updated pressure state
 - outcomes then feed the Chronicle and evaluation layers
 
 Later systems should slot into this causal spine rather than bypass it.
@@ -186,7 +194,7 @@ In Phase 1, the monthly tick returns a `SimulationStepResult` containing:
 - start and end date
 - executed systems in order
 - structured chronicle events emitted that month
-- lightweight region and population change summaries
+- lightweight region, population, and movement change summaries
 - optional notes
 
 This keeps simulation truth and presentation cleaner.
@@ -220,6 +228,7 @@ Phase 1 currently implements real behavior for:
 - environmental update
 - ecology/support update
 - population update
+- movement evaluation and relocation across region adjacency
 - chronicle event generation
 
 The remaining broad systems are wired into the same ordered pipeline as placeholders so later work extends the same backbone instead of replacing it.

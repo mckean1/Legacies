@@ -39,6 +39,8 @@ Advance the world month by month through the SimulationEngine.
 
 This uses the same pressure-driven causal pipeline described in `SIMULATION_LOOP.md` and governed by `PRESSURES.md`; world generation should not bypass that model with special-case outcome shortcuts.
 
+Current movement truth is region-based. Populations can relocate only across explicit region adjacency; world generation should not fabricate movement through hidden cell layers or worldgen-only shortcuts.
+
 ### 3. Observe World State
 Derived observer/evaluator layers inspect the world without rewriting it.
 
@@ -79,7 +81,7 @@ The first world generation implementation should be modest.
 It only needs to prove:
 - a world can initialize
 - monthly time progression works
-- populations survive, move, or fail based on support
+- populations survive, relocate across region adjacency, or fail based on support pressure and neighboring opportunity
 - at least some social groups persist or emerge
 - meaningful chronicle-worthy history appears
 - one or more candidate societies can eventually exist
